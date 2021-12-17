@@ -13,13 +13,13 @@ Specifically used:
 - HTTP GET and POST with status codes. 
 - Identity server for Server-side authorization (mimic a Server admin)
 
-Microsoft Azure Deployment (inc. SQL database) coming soon along with client-side authentication using Jwt, claims etc. 
+Microsoft Azure Deployment (inc. SQL database) coming soon along with client-side authentication using Jwt, claims etc. Although no client-side authentication allows for a complete walk through with no hassle in creating accounts...
 
-(Until Microsoft respond to my request to fix my Azure account and resource quotas, the images will have to suffice)
+(Until Microsoft respond to my request to fix my Azure account and quotas, the images will have to suffice until I can get it hosted)
 
 # Server Architecture
 
-![Hidden Villa (1)](https://user-images.githubusercontent.com/50192239/146515231-161d6bd8-ec0d-4bbf-ae50-ec07e46597e1.png)
+![Hidden Villa (2) updated](https://user-images.githubusercontent.com/50192239/146516885-1ff684bb-2bf2-4f24-94b9-043b1a0aacde.png)
 
 
 # Landing page
