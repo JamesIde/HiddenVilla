@@ -1,6 +1,6 @@
 # HiddenVilla - Blazor WASM and Server application with .NET API
 Blazor WASM and Server application with .NET API.
-A project to practice the concepts related to .NET core, MVC architecture, C#, Blazor WASM and Server, alongside creating and consuming an API in .NET 5. 
+A project to practice the concepts related to .NET core, C#, Blazor WASM and Server, alongside creating and consuming a .NET 5 API.
 Specifically used:
 - Blazor WASM
 - Blazor Server
