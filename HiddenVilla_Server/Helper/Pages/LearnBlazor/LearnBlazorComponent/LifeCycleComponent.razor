@@ -1,0 +1,25 @@
+﻿
+<h3>LifeCycle Child Component</h3>
+
+@foreach (var item in EventType){
+    <hr />
+    @item
+    <hr />
+}
+
+@code {
+    private int currentCount = 0;
+
+    public List<String> EventType = new List<string>();
+}
+
+
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        EventType.Add("Child OnInitialised is called");
+    }
+}

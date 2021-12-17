@@ -1,0 +1,250 @@
+﻿@page "/hotel/room-details/{Id:int}"
+@using Model
+@inject IJSRuntime jsRuntime
+@inject ILocalStorageService localStorage
+@inject IHotelRoomService hotelRoomService
+@inject IStripePaymentService stripePaymentService
+@inject IRoomOrderDetailsService roomOrderDetailsService
+@inject NavigationManager NavigationManager
+
+@if (HotelBooking?.orderDetails?.HotelRoomDTO?.HotelRoomImages == null)
+{
+    <div class="spinner"></div>
+}
+else
+{
+    <div class="mt-4 mx-4 px-0 px-md-5 mx-md-5">
+ <div class="row p-2 my-3 " style="border-radius:20px; ">
+            <div class="col-12 col-lg-7 p-4" >
+                <div class="row px-2 text-primary border-bottom">
+                    <div class="col-8 py-1"><p style="font-size:x-large;margin:0px;">Selected Room</p></div>
+                    <div class="col-4 p-0 float-right">
+                        <a href="hotel/rooms" class="btn btn-secondary btn-block" style = "margin-left: 75px !important;">Return to Room Selection</a></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div id="" class="carousel slide mb-4 m-md-3 m-0 pt-3 pt-md-0" data-ride="carousel">
+                            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                                <ol class="carousel-indicators">
+                                @{
+                                int imageIndex = 0;
+                                int innerImageIndex = 0;
+                                }
+                                @foreach (var image in HotelBooking.orderDetails.HotelRoomDTO.HotelRoomImages)
+                                {
+                                if (imageIndex == 0)
+                                {
+                                <li data-target="#carouselExampleIndicators" data-slide-to="@imageIndex" class="active"></li>
+
+                                }
+                                else
+                                {
+                                <li data-target="#carouselExampleIndicators" data-slide-to="@imageIndex"></li>
+                                }
+                                imageIndex++;
+                                }
+                            </ol>
+                            <div class="carousel-inner">
+                                @foreach (var image in HotelBooking.orderDetails.HotelRoomDTO.HotelRoomImages)
+                                {
+                                if (innerImageIndex == 0)
+                                {
+                                <div class="carousel-item active">
+                                    <img class="d-block w-100" style="border-radius:20px;" src="@image.RoomImageURL" alt="First slide">
+                                </div>
+                                }
+                                else
+                                {
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" style="border-radius:20px;" src="@image.RoomImageURL" alt="First slide">
+                                </div>
+                                }
+
+                                innerImageIndex++;
+                                }
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="row p-2">
+                    <div class="col-12">
+                        <p class="card-title" style="font-size:xx-large; text-black">@HotelBooking.orderDetails.HotelRoomDTO.Name</p>
+                        <p class="card-text" style="font-size:large">
+                            @((MarkupString)@HotelBooking.orderDetails.HotelRoomDTO.Details)
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-5 p-4 2 mt-4 mt-md-0" >
+            <div class="row  text-primary border-bottom">
+                <div class="col-7 "><p style="font-size:x-large;margin:0px;">Room Information</p></div></div>
+                <div>
+                  <h4 class="font-weight-bold mt-2 ml-2 text-black" >
+                      @HotelBooking.orderDetails.HotelRoomDTO.Name
+                            </h4>
+                            <span class="ml-2">Max Occupancy : @HotelBooking.orderDetails.HotelRoomDTO.Occupancy adults </span><br />
+                            <span class="ml-2 pt-1">Villa Size : @HotelBooking.orderDetails.HotelRoomDTO.SqFt sqft</span><br />
+
+                             @if(HotelBooking.orderDetails.HotelRoomDTO.StayLength > 1)
+                                        {
+                                            <span class="ml-2">Cost for @HotelBooking.orderDetails.HotelRoomDTO.StayLength nights stay: $@HotelBooking.orderDetails.HotelRoomDTO.Cost</span>
+                                        }
+                                        else
+                                        {
+                                           <span class="ml-2">Cost for @HotelBooking.orderDetails.HotelRoomDTO.StayLength night stay: $@HotelBooking.orderDetails.HotelRoomDTO.Cost </span>
+                                        }
+                       </div>
+                <EditForm Model="HotelBooking" class="container" OnValidSubmit="HandleCheckout">
+
+                   <div class="row px-2 text-success border-bottom"></div>
+                    <div class="form-group pt-2">
+                        <label class=" ">Name</label>
+                        <InputText @bind-Value="HotelBooking.orderDetails.Name" type="text" class="form-control" style = "border: 1px solid rgb(154, 169, 222);" />
+                    </div>
+                    <div class="form-group pt-2">
+                        <label class=" ">Phone</label>
+                        <InputText @bind-Value="HotelBooking.orderDetails.Phone" type="text" class="form-control" style = "border: 1px solid rgb(154, 169, 222);"/>
+                    </div>
+                    <div class="form-group">
+                        <label class=" ">Email</label>
+                        <InputText @bind-Value="HotelBooking.orderDetails.Email" type="text" class="form-control"style = "border: 1px solid rgb(154, 169, 222);" />
+                    </div>
+                    <div class="form-group">
+                        <label class=" ">Check in Date</label>
+                        <InputDate @bind-Value="HotelBooking.orderDetails.CheckInDate" type="date" disabled class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class=" ">Check out Date</label>
+                        <InputDate @bind-Value="HotelBooking.orderDetails.CheckOutDate" type="date" disabled="disabled" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class=" ">Length of stay</label> <br />
+                        <span>@HotelBooking.orderDetails.HotelRoomDTO.StayLength nights</span>
+                    </div>
+                    <div class="form-group mt-1">
+                        <button type="submit" class="btn btn-success form-control">Checkout Now</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    public HotelRoomBookingViewModel HotelBooking { get; set; } = new HotelRoomBookingViewModel();
+    private int NoOfNights { get; set; } = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await Task.Delay(5000);
+            HotelBooking.orderDetails = new RoomOrderDetailsDTO();
+            if (Id != null)
+            {
+                //check if the local storage is not empty (in reality it never will be)
+                if (await localStorage.GetItemAsync<HomeVM>(SD.Local_InitialBooking) != null)
+                {
+                    //get initial info (checkin/out+stayLength) using GetItemAsync
+                    var roomInitialInfo = await localStorage.GetItemAsync<HomeVM>(SD.Local_InitialBooking);
+
+                    //Now we transfer the initial info using the hotelroomService and get the info by Id 
+
+                    //Get the checkin and checkout date from roomInitialInfo variable and populate the fields
+                    HotelBooking.orderDetails.HotelRoomDTO = await hotelRoomService.GetHotelRoomById(Id.Value,
+                        roomInitialInfo.StartDate.ToString("dd/MM/yyyy"), roomInitialInfo.EndDate.ToString("dd/MM/yyyy"));
+
+                    NoOfNights = roomInitialInfo.NoOfNights;
+                    HotelBooking.orderDetails.CheckInDate = roomInitialInfo.StartDate;
+                    HotelBooking.orderDetails.CheckOutDate = roomInitialInfo.EndDate;
+                    HotelBooking.orderDetails.HotelRoomDTO.StayLength = roomInitialInfo.NoOfNights;
+                    HotelBooking.orderDetails.HotelRoomDTO.Cost =
+                        roomInitialInfo.NoOfNights * HotelBooking.orderDetails.HotelRoomDTO.Rate;
+                }
+                else
+                {
+                   await jsRuntime.ToastrError("Please select a check in date");
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+    }
+
+    private async Task HandleCheckout()
+    {
+        if (!await HandleValidation())
+        {
+            return;
+        }
+
+        try
+        {
+            var paymentDTO = new StripePaymentDTO()
+            {
+                Cost = Convert.ToInt32(HotelBooking.orderDetails.HotelRoomDTO.Cost * 100),
+                ProductName = HotelBooking.orderDetails.HotelRoomDTO.Name,
+                ReturnURL = "/hotel/room-details/" + Id
+            };
+
+            //Accesing the stripePaymentService 
+            var result = await stripePaymentService.CheckOutCompleted(paymentDTO);
+
+            HotelBooking.orderDetails.StripeSessionId = result.Data.ToString();
+            HotelBooking.orderDetails.RoomId = HotelBooking.orderDetails.HotelRoomDTO.Id;
+            HotelBooking.orderDetails.TotalCost = HotelBooking.orderDetails.HotelRoomDTO.Cost;
+
+            var roomOrderDetailsSaved = await roomOrderDetailsService.SaveRoomOrderDetails(HotelBooking.orderDetails);
+
+            await localStorage.SetItemAsync(SD.Local_RoomOrderDetails, roomOrderDetailsSaved);
+
+            await jsRuntime.InvokeVoidAsync("redirectToCheckout", result.Data.ToString());
+        }
+        catch (Exception e)
+        {
+            await jsRuntime.ToastrError(e.Message);
+        }
+
+    }
+
+    private async Task<bool> HandleValidation()
+    {
+        if (string.IsNullOrEmpty(HotelBooking.orderDetails.Name))
+        {
+            await jsRuntime.ToastrError("Name cannot be empty");
+            return false;
+        }
+        if (string.IsNullOrEmpty(HotelBooking.orderDetails.Phone))
+        {
+            await jsRuntime.ToastrError("Phone cannot be empty");
+            return false;
+        }
+
+        if (string.IsNullOrEmpty(HotelBooking.orderDetails.Email))
+        {
+            await jsRuntime.ToastrError("Email cannot be empty");
+            return false;
+        }
+        return true;
+
+    }
+}

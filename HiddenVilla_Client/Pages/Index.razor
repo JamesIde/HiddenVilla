@@ -1,0 +1,152 @@
+﻿@page "/"
+@using HiddenVilla_Client.Model.ViewModel
+@inject ILocalStorageService localStorage
+@inject IJSRuntime jsRuntime
+@inject NavigationManager navigationManager
+@inject IHotelAmenityService hotelAmenityService
+
+@if (IsProcessing)
+{
+    <div class="spinner"></div>
+}
+else
+{
+    <div class="row p-0 m-0">
+
+        <div id="carousel-image-background">
+            <h1 id = "main-header">Hidden Villa 
+                <br />
+                </h1>
+               <br />
+               
+        </div>
+       @* <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            </ol>
+            <div class="carousel-inner">
+            <div class="carousel-item active" id="carousel-image-background">
+            <h1 style = "text-align:center;justify-self:center;padding:350px;font-weight:bold">Hidden Villa 
+                <br />
+                </h1>
+               <br />
+        </div>
+                <div class="carousel-item" id="carousel-image-background">
+                <h1 style = "text-align:center;justify-self:center;padding:350px;font-weight:bold">More than just a hotel... An experience 
+                <br />
+                </h1>
+               <br />
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+            </a>
+            </div>*@
+    </div>
+    <EditForm Model="HomeModel" OnValidSubmit="SaveInitialData">
+        <div class="row pt-3 pb-4 mx-0 bg-dark ">
+            <h3 id = "h3-before-checkin" style = "text-align: center;">
+                   Select dates to get started
+               </h3>
+            <div class="col-12 col-md-5  offset-md-1 pl-2  pr-2 pr-md-0">
+                <div class="form-group">
+                    <label>Check In Date</label>
+                    <InputDate min="@DateTime.Now.ToString("dd/MM/yyyy")" @bind-Value="HomeModel.StartDate" type="text"
+                    class="form-control" style="margin-right:10px" />
+                </div>
+            </div>
+
+            <div class="col-8 col-md-3 pl-2 pr-2">
+                <div class="form-group" style="margin-left:10px;margin-right:10px;">
+                    <label>No. of nights</label>
+                    <select class="form-control" @bind="HomeModel.NoOfNights">
+                        @for (var i = 1; i <= 10; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-8 col-md-3  pt-4" style="margin-bottom:5px;">
+                <div class="form-group">
+
+                    @*<button type="submit" value="Explore our Rooms" class="btn btn-success btn-block"></button>*@
+                    <input type="submit" value="Explore Our Rooms" class="btn btn-success btn-block" />
+                </div>
+            </div>
+
+        </div>
+    </EditForm>
+    <div class="container pt-4">
+        <div class="row">
+            <div class="col-md-8 offset-md-2 text-center">
+                <h2 class="text-warning" id = "explore-amenity-header">Explore our Amenities</h2>
+                <p class="lead">Hidden Villa offers a large number of amenities for all patrons, some of which are listed below. </p>
+            </div>
+        </div>
+        <div class="row">
+
+            @foreach (var amenity in HotelAmenities)
+            {
+                <div class="col-md-4 col-6 p-4">
+                    <div style="border: 1px solid rgb(154, 169, 222); border-radius:20px;">
+                        <div class="row col-4 offset-4 p-4">
+                            <i class="@amenity.IconStyle fa-4x"></i>
+                        </div>
+                        <div class="text-center justify-content-center">
+                            <h5 class="text-warning" id = "explore-amenity-header">@amenity.Name</h5>
+                            <p class="mx-2">@amenity.Description</p>
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+
+}
+@code {
+
+    public HomeVM HomeModel { get; set; } = new HomeVM();
+    public IEnumerable<HotelAmenityDTO> HotelAmenities { get; set; } = new List<HotelAmenityDTO>();
+    public bool IsProcessing { get; set; } = false;
+    protected override async Task OnInitializedAsync()
+    {
+
+        try
+        {
+            IsProcessing = true;
+            HotelAmenities = await hotelAmenityService.GetAmenityList();
+            IsProcessing = false;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+    }
+
+
+    private async Task SaveInitialData()
+    {
+        try
+        {
+            HomeModel.EndDate = HomeModel.StartDate.AddDays(HomeModel.NoOfNights);
+
+            await localStorage.SetItemAsync(SD.Local_InitialBooking, HomeModel);
+            navigationManager.NavigateTo("hotel/rooms", true);
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+    }
+
+}
