@@ -1,5 +1,5 @@
 # HiddenVilla - Blazor WASM and Server application with .NET API
-Blazor WASM and Server application with .NET API.
+A resort booking system created with Blazor WASM and Server.
 A project to practice the concepts related to .NET core, C#, Blazor WASM and Server, alongside creating and consuming a .NET 5 API.
 Specifically used:
 - Blazor WASM
@@ -8,6 +8,7 @@ Specifically used:
 - Repository design (where the CRUD methods are actually coded, the sacred class which forms the backbone of the application)
 - SQL Server
 - Entity Framework Core (DBContext, Migration)
+- Stripe payment integration
 - Data Transfer Objects and AutoMapper
 - SwaggerUI for API Endpoint testing
 - HTTP GET and POST with status codes. 
