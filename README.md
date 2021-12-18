@@ -22,6 +22,9 @@ Microsoft Azure Deployment (inc. SQL database) coming soon along with client-sid
 
 ![Hidden Villa (2) updated](https://user-images.githubusercontent.com/50192239/146516885-1ff684bb-2bf2-4f24-94b9-043b1a0aacde.png)
 
+# Example 
+
+![Hidden Villa Example 2](https://user-images.githubusercontent.com/50192239/146658572-242c20f2-e558-4cf8-b0b5-b96cc6a70fba.png)
 
 # Landing page
 ![log in](https://user-images.githubusercontent.com/50192239/146516056-3863a384-5614-4be4-9789-93734b5a03e0.PNG)
