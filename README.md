@@ -21,14 +21,18 @@ Microsoft Azure Deployment (inc. SQL database) coming soon along with client-sid
 # Server Architecture
 
 ![Hidden Villa (2) updated](https://user-images.githubusercontent.com/50192239/146516885-1ff684bb-2bf2-4f24-94b9-043b1a0aacde.png)
+# Client side demo
+
+![Hidden Villa Demonstration Part 1](https://user-images.githubusercontent.com/50192239/146742269-61e1f3d1-830e-4547-9a19-5800e3421468.gif)
+
+# Server side demo
+
+![Hidden Villa Demonstration Part 2](https://user-images.githubusercontent.com/50192239/146742324-bf494fa9-4161-4b08-955c-4d02b92c85e8.gif)
+
 
 # Example 
 
 ![Hidden Villa Example 2](https://user-images.githubusercontent.com/50192239/146658572-242c20f2-e558-4cf8-b0b5-b96cc6a70fba.png)
-
-# Landing page
-![log in](https://user-images.githubusercontent.com/50192239/146516056-3863a384-5614-4be4-9789-93734b5a03e0.PNG)
-
 
 # API with SwaggerUI
 ![Hidden Villa Stripe](https://user-images.githubusercontent.com/50192239/146515620-5ff405e2-51f5-4d18-8ecc-cba72dd43c16.PNG)
