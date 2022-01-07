@@ -12,11 +12,11 @@ Specifically used:
 - Data Transfer Objects and AutoMapper
 - SwaggerUI for API Endpoint testing
 - HTTP GET and POST with status codes. 
-- Identity server for Server-side authorization (mimic a Server admin)
+- Identity server for Server-side authorization (Server admin scenario
 
-Microsoft Azure Deployment (inc. SQL database) coming soon along with client-side authentication using Jwt, claims etc. Although no client-side authentication allows for a complete walk through with no hassle in creating accounts...
+Azure deployment and client-side authentication coming soon.
 
-(Until Microsoft respond to my request to fix my Azure account and quotas, the images will have to suffice until I can get it hosted)
+(Until Microsoft respond to my request to fix my Azure account and quotas, the images will have to do until I can get it hosted)
 
 # Server Architecture
 
