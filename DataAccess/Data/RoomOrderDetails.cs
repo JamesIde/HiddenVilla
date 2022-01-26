@@ -22,7 +22,6 @@ namespace DataAccess.Data
         //Checkin/out can be different
         public DateTime ActualCheckInDate { get; set; }
         public DateTime ActualCheckOutDate { get; set; }
-
         public double TotalCost { get; set; }
         [Required]
         public int RoomId { get; set; }

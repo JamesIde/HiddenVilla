@@ -61,8 +61,6 @@ namespace Business.Repository
         {
             return _mapper.Map<IEnumerable<HotelRoomImage>, IEnumerable<HotelRoomImageDTO>>(
             await _db.HotelRoomImages.Where(x => x.RoomId == roomId).ToListAsync());
-
-
         }
     }
 }

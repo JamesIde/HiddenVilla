@@ -12,7 +12,6 @@ namespace DataAccess.Data
 
         public int Id { get; set; }
         public int RoomId { get; set; }
-
         public string RoomImageURL { get; set; }
 
         [ForeignKey("RoomId")]

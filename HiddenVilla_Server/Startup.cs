@@ -17,6 +17,7 @@ using HiddenVilla_Server.Service.IService;
 using HiddenVilla_Server.Service;
 using Microsoft.AspNetCore.Identity;
 using DataAccess.Data;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HiddenVilla_Server
 {
@@ -50,6 +51,7 @@ namespace HiddenVilla_Server
             services.AddScoped<IHotelImagesRepository, HotelImagesRepository>();
             services.AddScoped<IHotelAmenityRepository, HotelAmenityRepository>();
             services.AddHttpContextAccessor();
+            //services.Configure<RazorPagesOptions>(options => options.RootDirectory = "/Pages");
 
 
         }

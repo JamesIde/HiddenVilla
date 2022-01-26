@@ -18,36 +18,8 @@ else
                 <br />
                 </h1>
                <br />
-               
         </div>
-       @* <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-            </ol>
-            <div class="carousel-inner">
-            <div class="carousel-item active" id="carousel-image-background">
-            <h1 style = "text-align:center;justify-self:center;padding:350px;font-weight:bold">Hidden Villa 
-                <br />
-                </h1>
-               <br />
-        </div>
-                <div class="carousel-item" id="carousel-image-background">
-                <h1 style = "text-align:center;justify-self:center;padding:350px;font-weight:bold">More than just a hotel... An experience 
-                <br />
-                </h1>
-               <br />
-                </div>
-            </div>
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-            </a>
-            </div>*@
+        
     </div>
     <EditForm Model="HomeModel" OnValidSubmit="SaveInitialData">
         <div class="row pt-3 pb-4 mx-0 bg-dark ">
@@ -80,7 +52,6 @@ else
                     <input type="submit" value="Explore Our Rooms" class="btn btn-success btn-block" />
                 </div>
             </div>
-
         </div>
     </EditForm>
     <div class="container pt-4">
@@ -110,12 +81,14 @@ else
         </div>
 
     </div>
-
 }
 @code {
 
     public HomeVM HomeModel { get; set; } = new HomeVM();
+
+    //grabs the list of amenities
     public IEnumerable<HotelAmenityDTO> HotelAmenities { get; set; } = new List<HotelAmenityDTO>();
+
     public bool IsProcessing { get; set; } = false;
     protected override async Task OnInitializedAsync()
     {
@@ -123,6 +96,8 @@ else
         try
         {
             IsProcessing = true;
+
+            //populate the list of amenities
             HotelAmenities = await hotelAmenityService.GetAmenityList();
             IsProcessing = false;
         }

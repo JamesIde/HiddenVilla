@@ -39,8 +39,6 @@ namespace HiddenVilla_API
         {
 
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
-
-
             var AppSettingsSection = Configuration.GetSection("APISettings");
             services.Configure<APISettings>(AppSettingsSection);    
 
@@ -89,7 +87,7 @@ namespace HiddenVilla_API
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HiddenVilla_API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HiddenVilla_Api", Version = "v1" });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
@@ -97,7 +95,6 @@ namespace HiddenVilla_API
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey
                 });
-
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement {
                    {
                      new OpenApiSecurityScheme
@@ -121,10 +118,15 @@ namespace HiddenVilla_API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HiddenVilla_API v1"));
 
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "HiddenVilla_Api");
+                //c.RoutePrefix = string.Empty;
+            }
+            );
 
             app.UseHttpsRedirection();
 

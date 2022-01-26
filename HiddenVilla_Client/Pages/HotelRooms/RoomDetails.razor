@@ -31,8 +31,7 @@ else
                                 int imageIndex = 0;
                                 int innerImageIndex = 0;
                                 }
-                                @foreach (var image in HotelBooking.orderDetails.HotelRoomDTO.HotelRoomImages)
-                                {
+                                @foreach (var image in HotelBooking.orderDetails.HotelRoomDTO.HotelRoomImages){
                                 if (imageIndex == 0)
                                 {
                                 <li data-target="#carouselExampleIndicators" data-slide-to="@imageIndex" class="active"></li>
@@ -142,8 +141,6 @@ else
         </div>
     </div>
 }
-
-
 @code {
     [Parameter]
     public int? Id { get; set; }
@@ -162,16 +159,16 @@ else
                 //check if the local storage is not empty (in reality it never will be)
                 if (await localStorage.GetItemAsync<HomeVM>(SD.Local_InitialBooking) != null)
                 {
-                    //get initial info (checkin/out+stayLength) using GetItemAsync
                     var roomInitialInfo = await localStorage.GetItemAsync<HomeVM>(SD.Local_InitialBooking);
 
-                    //Now we transfer the initial info using the hotelroomService and get the info by Id 
+                    //transfer information about booking from local storage into the viewmodel
+                    //inside the viewmodel, pass that information into the DTO
 
-                    //Get the checkin and checkout date from roomInitialInfo variable and populate the fields
                     HotelBooking.orderDetails.HotelRoomDTO = await hotelRoomService.GetHotelRoomById(Id.Value,
                         roomInitialInfo.StartDate.ToString("dd/MM/yyyy"), roomInitialInfo.EndDate.ToString("dd/MM/yyyy"));
 
                     NoOfNights = roomInitialInfo.NoOfNights;
+
                     HotelBooking.orderDetails.CheckInDate = roomInitialInfo.StartDate;
                     HotelBooking.orderDetails.CheckOutDate = roomInitialInfo.EndDate;
                     HotelBooking.orderDetails.HotelRoomDTO.StayLength = roomInitialInfo.NoOfNights;
@@ -207,7 +204,10 @@ else
             };
 
             //Accesing the stripePaymentService 
+            //await success
             var result = await stripePaymentService.CheckOutCompleted(paymentDTO);
+
+            //populate remaining attributes from orderDetails
 
             HotelBooking.orderDetails.StripeSessionId = result.Data.ToString();
             HotelBooking.orderDetails.RoomId = HotelBooking.orderDetails.HotelRoomDTO.Id;
@@ -223,7 +223,6 @@ else
         {
             await jsRuntime.ToastrError(e.Message);
         }
-
     }
 
     private async Task<bool> HandleValidation()

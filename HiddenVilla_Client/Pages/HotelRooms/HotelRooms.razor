@@ -63,21 +63,6 @@
                                 int imageIndex = 0;
                                 int innerImageIndex = 0;
                             }
-                            @foreach (var image in room.HotelRoomImages)
-                            {
-                                if (imageIndex == 0)
-                                {
-                                    <li data-target="#carouselExampleIndicators_@room.Id" data-slide-to="@imageIndex" class="active"></li>
-
-                                }
-                                else
-                                {
-                                    <li data-target="#carouselExampleIndicators_@room.Id" data-slide-to="@imageIndex"></li>
-                                }
-                                imageIndex++;
-                            }
-
-
                         </ol>
                         <div class="carousel-inner">
                             @foreach (var image in room.HotelRoomImages)
@@ -98,14 +83,6 @@
                                 innerImageIndex++;
                             }
                         </div>
-                        @*<a class="carousel-control-prev" href="#carouselExampleIndicators_@room.Id" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#carouselExampleIndicators_@room.Id" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>*@
                     </div>
                 </div>
                 <div class="col-12 col-lg-9 col-md-8">
@@ -171,7 +148,7 @@ else
 }
 
 @code {
-
+    //initialise a new homemodel
     private HomeVM HomeModel { get; set; } = new HomeVM();
     public IEnumerable<HotelRoomDTO> Rooms { get; set; } = new List<HotelRoomDTO>();
 
@@ -184,6 +161,8 @@ else
 
             if (await localStorage.GetItemAsync<HomeVM>(SD.Local_InitialBooking) != null)
             {
+                //populate the new homemodel with the information from the homemodel stored in local storage
+
                 HomeModel = await localStorage.GetItemAsync<HomeVM>(SD.Local_InitialBooking);
 
             }

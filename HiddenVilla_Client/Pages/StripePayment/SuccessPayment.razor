@@ -9,7 +9,7 @@
     <div class="col-10 offset-1 text-center">
         <h2 class="text-warning">Booking Confirmed</h2>
         <p>Thank you for purchasing a room at Hidden Villa. Order number: @OrderId</p>
-        <p>Your check-in date is @Checkin and check-out date is @Checkout</p>
+        <p>Your check-in date is @Checkin.ToString("dd/MM/yyyy") and check-out date is @Checkout.ToString("dd/MM/yyyy")</p>
         </div>
         <div class="col-8 offset-2 mb-1">
         <img src="/images/confirmation.jpg" width="100%" style="border-radius:30px;" />
@@ -19,7 +19,7 @@
  </div>
 
 @code {
-    private bool IsPaymentComplete { get; set; } = false;
+    private bool IsPaymentComplete = false;
     private int OrderId { get; set; }
     private double Cost { get; set; }
     private DateTime Checkin { get; set; }
@@ -28,6 +28,9 @@
     protected override async Task OnInitializedAsync()
     {
         var orderDetails = await localStorage.GetItemAsync<RoomOrderDetailsDTO>(SD.Local_RoomOrderDetails);
+        
+        //get the info from local storage to display to the user
+        
         OrderId = orderDetails.Id;
         Cost = orderDetails.TotalCost;
         Checkin = orderDetails.CheckInDate;

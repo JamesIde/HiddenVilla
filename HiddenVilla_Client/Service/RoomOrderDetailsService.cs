@@ -36,12 +36,14 @@ namespace HiddenVilla_Client.Service
                 return null;
             }
         }
-
+        //saving the order after payment completed
+        //
         public async Task<RoomOrderDetailsDTO> SaveRoomOrderDetails(RoomOrderDetailsDTO details)
         {
             details.UserId = "James";
             var content = JsonConvert.SerializeObject(details);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+            //
             var response = await _client.PostAsync("api/roomorder/create", bodyContent);
 
             if (response.IsSuccessStatusCode)

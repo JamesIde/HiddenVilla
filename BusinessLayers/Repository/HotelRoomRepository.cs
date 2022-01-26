@@ -15,6 +15,8 @@ namespace Business.Repository
 {
     public class HotelRoomRepository : IHotelRoomRepository
     {
+        //implements the methods defined in the interface
+        
 
         // Use application db context
         private readonly ApplicationDbContext _db;
@@ -89,31 +91,7 @@ namespace Business.Repository
             }
         }
 
-        public async Task<HotelRoomDTO> IsRoomUnique(string name, int roomId = 0)
-        {
-            try
-            {
-                if (roomId == 0)
-                {
-                    HotelRoomDTO hotelRoom = _mapper.Map<HotelRoom, HotelRoomDTO>(
-                        await _db.HotelRooms.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower()));
-
-                    return hotelRoom;
-                }
-                else
-                {
-                    HotelRoomDTO hotelRoom = _mapper.Map<HotelRoom, HotelRoomDTO>(
-                        await _db.HotelRooms.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower()
-                        && x.Id != roomId));
-
-                    return hotelRoom;
-                }
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
+        
         public async Task<bool> IsBooked(int RoomId, string checkInDatestr, string checkOutDatestr)
         {
             try
@@ -142,8 +120,6 @@ namespace Business.Repository
             {
                 throw ex;
             }
-
-
         }
         public async Task<HotelRoomDTO> UpdateHotelRoom(int roomId, HotelRoomDTO hotelRoomDTO)
         {
@@ -178,6 +154,7 @@ namespace Business.Repository
 
             if (roomDetails != null)
             {
+                //find the images associated with the roomId
                 var allImages = await _db.HotelRoomImages.Where(x => x.RoomId == roomId).ToListAsync();
                 
 

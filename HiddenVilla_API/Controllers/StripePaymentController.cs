@@ -24,7 +24,7 @@ namespace HiddenVilla_Api.Controllers
         {
             try
             {
-                var domain = "https://localhost:44334/";
+                var domain = _configuration.GetValue<string>("HiddenVilla_Client_URL");
 
                 var options = new SessionCreateOptions
                 {
@@ -38,7 +38,7 @@ namespace HiddenVilla_Api.Controllers
                         {
                             PriceData = new SessionLineItemPriceDataOptions
                             {
-                                UnitAmount=payment.Cost,//convert to cents
+                                UnitAmount=payment.Cost,
                                 Currency="aud",
                                 ProductData= new SessionLineItemPriceDataProductDataOptions
                                 {

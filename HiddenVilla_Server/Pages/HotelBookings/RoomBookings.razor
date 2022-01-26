@@ -1,0 +1,79 @@
+﻿@page "/room-bookings"
+@using Models
+@using Business.Repository.IRepository
+@using Radzen
+@inject IRoomOrderDetailsRepository roomOrderDetailsrepository
+@inject IJSRuntime jsRuntime
+@inject NavigationManager NavigationManager
+@attribute [Authorize(Roles = CommonFiles.SD.Role_Admin)]
+
+@if (!isLoading)
+{
+    <h4 class="card-title text-info">Bookings</h4>
+    <RadzenGrid AllowFiltering="true"
+                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                FilterMode="FilterMode.Advanced" AllowPaging="true" PageSize="15"
+                AllowSorting="true" Data="@RoomOrders" TItem="RoomOrderDetailsDTO" ColumnWidth="200px">
+        <Columns>
+            <RadzenGridColumn TItem="RoomOrderDetailsDTO" Property="Name" Title="Customer Name" />
+            <RadzenGridColumn TItem="RoomOrderDetailsDTO" Property="Phone" Title="Phone Number" />
+            <RadzenGridColumn TItem="RoomOrderDetailsDTO" Property="RoomId" Title="Room Identifer" />
+            <RadzenGridColumn TItem="RoomOrderDetailsDTO" Property="HotelRoomDTO.Name" Title="Room" />
+            <RadzenGridColumn TItem="RoomOrderDetailsDTO" Property="Status" Title="Status" />
+            <RadzenGridColumn TItem="RoomOrderDetailsDTO" Property="CheckInDate" Title="Check-in Date"/>
+              <RadzenGridColumn TItem="RoomOrderDetailsDTO" Property="CheckOutDate" Title="Check-out Date">
+                <Template Context="data">
+                    @String.Format("{0:d}", data.CheckInDate)
+                </Template>
+            </RadzenGridColumn>
+
+            <RadzenGridColumn TItem="RoomOrderDetailsDTO" Property="Id" Title="">
+                <Template Context="data">
+                    <NavLink class="btn btn-primary" href="@($"room-bookings/details/{data.Id}")">Details</NavLink>
+                    <NavLink class="btn btn-danger text-white cursor-pointer" @onclick="()=>BookingDelete(data.Id)">Delete</NavLink>
+                </Template>
+            </RadzenGridColumn>
+        </Columns>
+    </RadzenGrid>
+}
+else
+{
+    <p>loading...</p>
+}
+
+
+
+@code {
+    //List of room orders of type RoomOrderDetailsDTO
+    private IEnumerable<RoomOrderDetailsDTO> RoomOrders { get; set; } = new List<RoomOrderDetailsDTO>();
+    private bool isLoading { get; set; } = false;
+    internal int? DeleteBookingId { get; set; } = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        //Get all the room order details from the roomOrderDetails repo which contains the GetAllRoomOrderDetail method
+        RoomOrders = await roomOrderDetailsrepository.GetAllRoomOrderDetail();
+        isLoading = false;
+    }
+
+    public async Task BookingDelete(int bookingId){
+
+        DeleteBookingId = bookingId;
+
+        if(DeleteBookingId != null)
+        {
+
+            try
+            {
+                await roomOrderDetailsrepository.DeleteBooking(bookingId);
+                await jsRuntime.ToastrSuccess("Booking Deleted");
+
+            } catch (Exception ex){
+                throw ex;
+            }
+            RoomOrders = await roomOrderDetailsrepository.GetAllRoomOrderDetail();
+        }
+
+    }
+}

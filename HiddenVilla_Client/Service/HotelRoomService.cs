@@ -10,6 +10,10 @@ namespace HiddenVilla_Client.Service
     public class HotelRoomService : IHotelRoomService
     {
 
+
+        //use http client and json helpers like 
+
+
         private readonly HttpClient _client;
 
         public HotelRoomService(HttpClient client)

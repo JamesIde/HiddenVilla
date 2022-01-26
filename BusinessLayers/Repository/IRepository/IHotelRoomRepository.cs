@@ -25,7 +25,6 @@ namespace Business.Repository.IRepository
         public Task<IEnumerable<HotelRoomDTO>> GetAllHotelRoom(string checkIn = null, string checkOut = null);
 
         //Get the name of the hotel room to validate booking
-        public Task<HotelRoomDTO> IsRoomUnique(string name,int roomId=0);
 
         public Task<bool> IsBooked(int RoomId, string checkInDate, string checkOutDate);
 

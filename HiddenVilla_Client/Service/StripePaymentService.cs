@@ -21,6 +21,8 @@ namespace HiddenVilla_Client.Service
         {
             var content = JsonConvert.SerializeObject(model);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+
+            //post request to create a new stripe session
             var response = await _client.PostAsync("api/stripepayment/create", bodyContent);
 
             if (response.IsSuccessStatusCode)

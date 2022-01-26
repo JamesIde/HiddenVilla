@@ -22,6 +22,7 @@ namespace HiddenVilla_API.Controllers
         }
 
 
+
         [HttpGet]
         public async Task<IActionResult> GetHotelRooms(string checkIn = null, string checkOut = null)
         {
@@ -33,7 +34,7 @@ namespace HiddenVilla_API.Controllers
                     ErrorMessage = "All parameters need to be supplied"
                 });
             }
-
+            //check if the dates are in dd mm yyyy
             if (!DateTime.TryParseExact(checkIn, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dtCheckInDate))
             {
                 return BadRequest(new ErrorModel()
@@ -68,23 +69,7 @@ namespace HiddenVilla_API.Controllers
                 });
             }
 
-            if (!DateTime.TryParseExact(checkIn, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dtCheckInDate))
-            {
-                return BadRequest(new ErrorModel()
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    ErrorMessage = "Invalid date - Please do it as dd/MM/yyyy"
-                });
-            }
-            if (!DateTime.TryParseExact(checkOut, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dtCheckOutDate))
-            {
-                return BadRequest(new ErrorModel()
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    ErrorMessage = "Invalid date - Please do it as dd/MM/yyyy"
-                });
-            }
-
+          
             var roomDetails = await _hotelRoomRepository.GetHotelRoom(roomId.Value, checkIn,checkOut);
 
             if (roomDetails == null)
@@ -98,6 +83,5 @@ namespace HiddenVilla_API.Controllers
             }
             return Ok(roomDetails);
         }
-
     }
 }
